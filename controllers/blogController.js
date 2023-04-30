@@ -1,4 +1,5 @@
 const Comment = require("../models/commentModel");
+const nodemailer = require("nodemailer");
 
 // Fetch blogs from blog API
 const fetch_blogs = async (req, res) => {
@@ -28,7 +29,7 @@ const get_comments = async (req, res) => {
 // Create a comment
 const create_comment = async (req, res) => {
     try{
-        const comment = await Comment.create({ ...req.body});
+        const comment = await Comment.create({ ...req.body });
         res.status(200).json(comment);
     }
     catch(error){
@@ -47,12 +48,41 @@ const delete_comment = async (req, res) => {
     catch(error){
         res.status(400).json({ error: error.message });
     }
+};
+
+// Send mail
+const send_mail = async (req, res) => {
+    const { email, message } = req.body;
+
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.MY_MAIL,
+            pass: process.env.MY_PASSWORD
+        }
+    });
+
+    const template = {
+        from: `${ email }`,
+        to: process.env.MY_MAIL,
+        text: `${ message }` 
+    };
+
+    transporter.sendMail(template, (error) => {
+        if(error){
+            res.status(400).json({ error: error.message });
+        }
+        else{
+            res.status(200).json({ msg: "Mail sent" });
+        }
+    })
 }
 
 module.exports = {
     fetch_blogs,
     get_comments,
     create_comment,
-    delete_comment
+    delete_comment,
+    send_mail
 };
 

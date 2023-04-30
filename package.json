@@ -4,7 +4,8 @@
   "description": "api for a blog site providing blog data and comment functionality to client side. Generating user images for accounts and protecting routes using jwt",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.0",
+    "nodemailer": "^6.9.1",
     "nodemon": "^2.0.22",
     "validator": "^13.9.0"
   }

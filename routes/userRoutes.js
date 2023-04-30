@@ -8,7 +8,7 @@ const {
 } = require("../controllers/userContoller");
 
 // Routes
-router.get("/avatar", user_avatar);
+router.post("/avatar", user_avatar);
 
 router.post("/signup", user_signup);
 

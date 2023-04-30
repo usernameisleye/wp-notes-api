@@ -10,16 +10,15 @@ const createJWT = ( _id ) => { //Create JWT
 
 // Create avatar
 const user_avatar = async (req, res) => {
-    const { username, background, eyes, nose, ears, mouth, hair, hairColor, shirt, shirtColor } = req.body;
+    const { username, background, baseColor ,eyes, nose, ears, mouth, hair, hairColor, shirt, shirtColor } = req.body;
 
     // Avatar queries for design specifics
-    const queries = `seed=${username}&backgroundColor=${background}&eyes=${eyes}&nose=${nose}&ears=${ears}&mouth=${mouth}&hair=${hair}&hairColor=${hairColor}&shirt=${shirt}&shirtColor=${shirtColor}`;
+    const queries = `seed=${username}&backgroundColor=${background}&baseColor=${baseColor}&eyes=${eyes}&nose=${nose}&ears=${ears}&mouth=${mouth}&hair=${hair}&hairColor=${hairColor}&shirt=${shirt}&shirtColor=${shirtColor}`;
 
     try{
         const avatar = `https://api.dicebear.com/6.x/micah/svg?${queries}`;
     
         res.status(200).json(avatar);
-        return avatar;
     }
     catch(error){
         res.status(400).json({ error: error.message })
@@ -28,7 +27,7 @@ const user_avatar = async (req, res) => {
 
 // Sign up user
 const user_signup = async (req, res) => {
-    const { username, email, password } = req.body;
+    const { avatar, username, email, password } = req.body;
 
     try{
         if(!username || !email || !password){
@@ -49,7 +48,7 @@ const user_signup = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
 
-        const user = await User.create({ avatar: user_avatar(), username, email, password: hash });
+        const user = await User.create({ avatar, username, email, password: hash });
         const token = createJWT(user._id);
 
         res.status(200).json({ username, token });
