@@ -65,10 +65,11 @@ const send_mail = async (req, res) => {
     const template = {
         from: `${ email }`,
         to: process.env.MY_MAIL,
+        subject: "WP Notes",
         text: `${ message }` 
     };
 
-    transporter.sendMail(template, (error) => {
+    transporter.sendMail(template, (error, info) => {
         if(error){
             res.status(400).json({ error: error.message });
         }

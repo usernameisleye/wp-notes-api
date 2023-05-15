@@ -10,10 +10,10 @@ const createJWT = ( _id ) => { //Create JWT
 
 // Create avatar
 const user_avatar = async (req, res) => {
-    const { username, background, baseColor ,eyes, nose, ears, mouth, hair, hairColor, shirt, shirtColor } = req.body;
+    const { username, background, baseColor ,eyes, eyeBrows ,nose, ears, mouth, hair, hairColor, shirt, shirtColor } = req.body;
 
     // Avatar queries for design specifics
-    const queries = `seed=${username}&backgroundColor=${background}&baseColor=${baseColor}&eyes=${eyes}&nose=${nose}&ears=${ears}&mouth=${mouth}&hair=${hair}&hairColor=${hairColor}&shirt=${shirt}&shirtColor=${shirtColor}`;
+    const queries = `seed=${username}&backgroundColor=${background}&baseColor=${baseColor}&eyes=${eyes}&eyebrows=${eyeBrows}&nose=${nose}&ears=${ears}&mouth=${mouth}&hair=${hair}&hairColor=${hairColor}&shirt=${shirt}&shirtColor=${shirtColor}&glassesProbability=0&earringsProbability=0`;
 
     try{
         const avatar = `https://api.dicebear.com/6.x/micah/svg?${queries}`;
@@ -21,7 +21,7 @@ const user_avatar = async (req, res) => {
         res.status(200).json(avatar);
     }
     catch(error){
-        res.status(400).json({ error: error.message })
+        res.status(400).json({ error: error.message });
     }
 };
 

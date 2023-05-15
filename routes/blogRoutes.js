@@ -13,6 +13,9 @@ const userAuthMiddleware = require("../middleware/userAuthMiddleware") //Auth
 // Routes
 router.get("/", fetch_blogs);
 
+// router.use(userAuthMiddleware);
+
+// Protected routes
 router.get("/comments", get_comments);
 
 router.post("/comments", create_comment);
