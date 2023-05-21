@@ -123,14 +123,14 @@ const user_login = async (req, res) => {
                 username
             });
         }else{
-            res.status(401)
+            res.status(400)
             .json({
                 error: "Invalid email or password"
             });
         }
     }
     catch(error){
-        res.status(401)
+        res.status(400)
         .json({ 
             error: error.message 
         });
