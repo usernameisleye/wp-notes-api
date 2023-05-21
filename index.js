@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const blogRoutes = require("./routes/blogRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -17,11 +18,17 @@ mongoose.connect(process.env.DB_STRING)
     })
     .catch((error) => {
         console.error(`Error connecting to database: ${error.message}`);
-    });
+});
 
+// Setting for CORS middleware
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true, 
+};
 
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
 
 // Routes

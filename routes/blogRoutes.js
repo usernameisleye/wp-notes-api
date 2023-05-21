@@ -3,6 +3,7 @@ const router = express.Router();
 // Controllers
 const {
     fetch_blogs,
+    fetch_blog,
     get_comments,
     create_comment,
     delete_comment,
@@ -11,17 +12,29 @@ const {
 const userAuthMiddleware = require("../middleware/userAuthMiddleware") //Auth
 
 // Routes
-router.get("/", fetch_blogs);
+router
+.route("/")
+.get(fetch_blogs)
 
-// router.use(userAuthMiddleware);
+router.use(userAuthMiddleware);
 
 // Protected routes
-router.get("/comments", get_comments);
+router
+.route("/comments")
+.get(get_comments)
+.post(create_comment)
 
-router.post("/comments", create_comment);
+router
+.route("/:id")
+.get(fetch_blog);
 
-router.delete("/comments/:id", delete_comment);
+router
+.route("/comments/:id")
+.delete(delete_comment);
 
-router.post("/mail", send_mail);
+router
+.route("/mail")
+.post(send_mail)
+
 
 module.exports = router;

@@ -1,23 +1,31 @@
-const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 const userAuthMiddleware = async (req, res, next) => {
-    const { authorization } = req.headers;
+    let jwtToken;
 
-    if(!authorization){
-        res.status(400).json({ error: "Missing authorization header" });
-    }
+    jwtToken = req.cookies.jwt;
 
-    const token = authorization.split(" ")[1] //Splitting auth header to get JWT
+    if(jwtToken){
+        try{
+            const decodedToken = jwt.verify(jwtToken, process.env.SECRET);
+    
+            req.user = await User.findById(decodedToken._id).select("_id");
+    
+            next();
+        }
+        catch(error){
+            res.status(401)
+            .json({
+                error: "Unauthorized request, Invalid token"
+            });
+        }
 
-    try{
-        const { _id } = jwt.verify(token, process.env.SECRET);
-
-        req.user = await User.findOne({ _id }).select("id"); //Getting id and storing in req user obj
-        next();
-    }
-    catch(error){
-        res.status(400).json({ error: "Unauthorized request" });
+    }else{
+        res.status(401)
+        .json({
+            error: "Unauthorized request, No token found"
+        });
     }
 };
 
